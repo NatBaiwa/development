@@ -2,11 +2,11 @@ import { Menu } from 'src/app/shared/interface/menu.interface';
 
 export const ROOT_MENU: Menu[] = [
   {
-    router: 'Lamp',
+    router: 'วาด',
     path: '/offer',
   },
   {
-    router: 'Display',
+    router: 'ภาพฉาย',
     path: '/answer',
   },
   {

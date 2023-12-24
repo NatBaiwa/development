@@ -46,14 +46,31 @@ export class LampComponent implements AfterViewInit, OnInit {
   @Input('items') items: any[] = [];
   @Input('drawing') drawing: boolean = false;
   @Input('display') display: boolean = false;
+  @Input('latestIndex') set latestIndex(value: number) {
+    this.showImageAnimationByIndex = true;
+    this.imageAnimationByIndex = value - 1;
+
+    setTimeout(() => {
+      this.showImageAnimationByIndex = false;
+    }, 800)
+  }
   @Output('itemsChange') itemsChange = new EventEmitter<any[]>();
+
+  showSendImageAnimation: boolean = false;
+  showImageAnimationByIndex: boolean = false;
+  imageAnimationByIndex: number = 0;
 
   sendData() {
     const image = this.canvas.nativeElement.toDataURL('image/png');
-    this.items.push(image);
-    this.itemsChange.emit(this.items);
-    this.channel?.send(image);
-    this.clearCanvas();
+    console.log(image);
+    this.showSendImageAnimation = true;
+    setTimeout(() => {
+      this.items.push(image);
+      this.itemsChange.emit(this.items);
+      this.channel?.send(image);
+      this.clearCanvas();
+      this.showSendImageAnimation = false;
+    }, 800)
   }
 
   ngOnInit(): void {
@@ -83,7 +100,7 @@ export class LampComponent implements AfterViewInit, OnInit {
   }
 
   setCanvasSize() {
-    const container = document.getElementById('container');
+    const container = document.getElementById('draw-area');
     if (!container) return;
 
     const canvas = this.canvasRef.nativeElement;
@@ -91,8 +108,10 @@ export class LampComponent implements AfterViewInit, OnInit {
     const containerHeight = container.offsetHeight;
 
     // Set canvas width and height
-    this.renderer.setAttribute(canvas, 'width', containerWidth.toString());
-    this.renderer.setAttribute(canvas, 'height', containerHeight.toString());
+    // this.renderer.setAttribute(canvas, 'width', containerWidth.toString());
+    // this.renderer.setAttribute(canvas, 'height', containerHeight.toString());
+    this.renderer.setAttribute(canvas, 'width', '431px');
+    this.renderer.setAttribute(canvas, 'height', '409px');
   }
 
   private setupCanvas(): void {

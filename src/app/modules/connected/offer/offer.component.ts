@@ -109,7 +109,6 @@ export class OfferComponent {
   /** เมื่ออีกเครื่องส่งข้อความมา */
   private _onChannelMessage(ev: MessageEvent<string>) {
     this._zone.run(() => {
-      console.log(ev.data);
       this.messageItems.push(ev.data);
     });
   }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ROOT_MENU } from './option.data';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -21,6 +21,7 @@ export class OptionComponent {
   /*                                  Functions                                 */
   /* -------------------------------------------------------------------------- */
   navigateTo(router: string) {
+    localStorage.setItem('isPageLoaded', 'true');
     this.router.navigate([router]);
   }
 

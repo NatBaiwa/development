@@ -60,6 +60,9 @@ export class AnswerComponent implements OnInit {
   messageItems: any[] = [];
   mode$ = new BehaviorSubject<AnswerMode>(AnswerMode.OFFER_APPROVE);
 
+  maxImages = 8;
+  latestIndex = 0;
+
   /* -------------------------------------------------------------------------- */
   /*                                     Get                                    */
   /* -------------------------------------------------------------------------- */
@@ -89,7 +92,6 @@ export class AnswerComponent implements OnInit {
 
     this._peer.setRemoteDescription(JSON.parse(this.offerData));
     this._peer.createAnswer().then((answer) => {
-      console.log(answer);
       this.offerData = JSON.stringify(answer);
       this._peer.setLocalDescription(answer);
     });
@@ -100,12 +102,23 @@ export class AnswerComponent implements OnInit {
   /** เมื่ออีกเครื่องส่งข้อความมา */
   private _onChannelMessage(ev: MessageEvent<string>) {
     this._zone.run(() => {
-      console.log(ev.data);
-      this.messageItems.push(ev.data);
+      this.onPushImage(ev.data, this.maxImages);
+      
       // this.messageItems.push({
       //   isMe: false,
       //   message: ev.data,
       // })
     });
+  }
+
+  onPushImage(image: any, maxImages: number) {
+    if (this.latestIndex === maxImages) this.latestIndex = 0;
+
+  if (this.messageItems.length < maxImages) {
+    this.messageItems.push(image);
+  } else {
+    this.messageItems[this.latestIndex] = image;
+  }
+  this.latestIndex += 1;
   }
 }
